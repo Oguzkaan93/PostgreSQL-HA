@@ -18,7 +18,7 @@ On Nodes 4-5-6
 ETCD
 
 On Node 7
-Pgbackrest - HaProxy - Keepalive
+Pgbackrest - HaProxy - Keepalived
 
 On Node 8
-HaProxy - Keepalive
+HaProxy - Keepalived
