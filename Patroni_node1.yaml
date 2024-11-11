@@ -28,6 +28,7 @@ bootstrap:
       use_pg_rewind: true
       use_slots: true
       parameters:
+        archive_command: "pgbackrest --stanza=patroni_stanza archive-push %p"
         max_connections: 65
         shared_buffers: 512MB
         effective_cache_size: 1536MB
@@ -45,12 +46,13 @@ bootstrap:
 #        wal_keep_segments: 8
 #        max_wal_senders: 5
 #        max_replication_slots: 5
-#        wal_log_hints: "on"
+        wal_log_hints: "on"
         archive_mode: "on"
 #        archive_timeout: 1800s
 #        archive_command: mkdir -p ../wal_archive && test ! -f ../wal_archive/%f && cp %p ../wal_archive/%f
 #      recovery_conf:
 #        restore_command: cp ../wal_archive/%f %p
+
 
   # some desired options for 'initdb'
   initdb:  # Note: It needs to be a list (some options need values, others are switches)
