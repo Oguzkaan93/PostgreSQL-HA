@@ -1,5 +1,4 @@
 --/etc/patroni/postgresql.yml
-
 scope: postgres
 name: node3
 
