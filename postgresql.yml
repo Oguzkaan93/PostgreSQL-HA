@@ -1,19 +1,18 @@
---/opt/patroni/etc/postgresql.yml
 scope: postgres
 name: node1
 
 restapi:
   listen: 192.168.68.100:8008
   connect_address: 192.168.68.100:8008
-#  certfile: /etc/ssl/certs/ssl-cert-snakeoil.pem
-#  keyfile: /etc/ssl/private/ssl-cert-snakeoil.key
-#  authentication:
-#    username: username
-#    password: password
+  # certfile: /etc/ssl/certs/ssl-cert-snakeoil.pem
+  #  keyfile: /etc/ssl/private/ssl-cert-snakeoil.key
+  authentication:
+    username: username
+    password: password
 
 etcd:
   hosts: 192.168.68.103:2379, 192.168.68.104:2379, 192.168.68.105:2379
-
+dir: /var/log/patroni
 bootstrap:
   # this section will be written into Etcd:/<namespace>/<scope>/config after initializing new cluster
   # and all other cluster members will use it as a `global configuration`
@@ -43,7 +42,7 @@ bootstrap:
         min_wal_size: 1GB
         max_wal_size: 4GB
         hot_standby: on
-#        wal_keep_segments: 8
+        wal_keep_segments: 8
 #        max_wal_senders: 5
 #        max_replication_slots: 5
         wal_log_hints: "on"
@@ -61,8 +60,7 @@ bootstrap:
 
   pg_hba:  # Add following lines to pg_hba.conf after running 'initdb'
   - host replication replicator 0.0.0.0/0 md5
-  - host all all 0.0.0.0/0 trust
-  - host all all 0.0.0.0/0 md5
+  - host all all 0.0.0.0/0 scram-sha-256
 #  - hostssl all all 0.0.0.0/0 md5
 
   # Additional script to be launched after initial cluster creation (will be passed the connection URL as parameter)
@@ -93,10 +91,10 @@ postgresql:
       username: postgres
       password: '123'
 
-#watchdog:
-#  mode: automatic # Allowed values: off, automatic, required
-#  device: /dev/watchdog
-#  safety_margin: 5
+watchdog:
+  mode: automatic # Allowed values: off, automatic, required
+  device: /dev/watchdog
+  safety_margin: 5
 
 tags:
     nofailover: false
