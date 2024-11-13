@@ -86,7 +86,7 @@ rm -f /tmp/etcd-${ETCD_VER}-linux-amd64.tar.gz
 
 * Create etcd service file  
   vim /etc/systemd/system/etcd.service  
-***Attached file {ETCD Service file}***  
+***Attached file {etcd.service}***  
 sudo systemctl daemon-reload  
   
 sudo mkdir -p /var/lib/etcd/  
@@ -98,7 +98,7 @@ sudo chmod -R a+rw /var/lib/etcd
 sudo chown etcd:etcd /usr/bin/etcd*  
 
 * Edit ETCD config file  
-    ***Attached file {ETCD Config File}***  
+    ***Attached file {ETCD_node1,2,3}***  
 sudo chown etcd:etcd /etc/etcd/etcd.conf  
 # Install patroni on nodes 1-2-3-7 
 following guide at https://github.com/patroni/patroni  
@@ -115,7 +115,7 @@ python3 -m pip install --upgrade pip
   
 mkdir -p /etc/patroni  
 vim /etc/patroni/postgresql.yml  
- ***Attached file {Postgresql.yml}***  
+ ***Attached file {Patroni_node1,2,3.yml}***  
 chown -R postgres:postgres /etc/patroni  
   
 vim /etc/systemd/system/patroni.service  
@@ -129,10 +129,10 @@ chown postgres:postgres /etc/pgbackrest.conf
   
 ## On Nodes 1-2-3  
 vim /etc/pgbackrest.conf  
-  ***Attached file {PostgreSQL Node config file}***  
+  ***Attached file {pgbackrest.conf}***  
 ## On Node 7  
 vim /etc/pgbackrest.conf  
-  ***Attached file {Repo config file}***  
+  ***Attached file {pgbackrest.con}***  
 pgbackrest --stanza=patroni_stanza stanza-create  
 pgbackrest --stanza=patroni_stanza check --log-level-console=detail  
 pgbackrest --stanza=patroni_stanza backup --log-level-console=detail  
@@ -142,13 +142,13 @@ pgbackrest --stanza=patroni_stanza backup --log-level-console=detail
 yum install haproxy  
 cp haproxy.cfg haproxy.cfg.bck  
 vim haproxy.cfg  
-  ***Attached file {Haproxy config file}***  
+  ***Attached file {haproxy_node1,2,3.conf}***  
 systemctl start haproxy.service  
   
 yum install keepalived -y  
 cp  /etc/keepalived/keepalived.conf.bckp  
 vim /etc/keepalived/keepalived.conf  
-  ***Attached file {Keepalive config file}***  
+  ***Attached file {keepalive_node1,2}***  
 systemctl start keepalived.service  
   
 # Install pgbouncer on node 4-5-6  
@@ -157,6 +157,6 @@ yum install pgbouncer -y
 chown -R pgbouncer:pgbouncer pgbouncer/  
 cp /etc/pgbouncer/pgbouncer.ini /etc/pgbouncer/pgbouncer.ini.bckp  
 vim /etc/pgbouncer/pgbouncer.ini  
-  ***Attached file {Pgbouncer config file}***  
+  ***Attached file {pgbouncer.ini}***  
 psql -Atq -h 192.168.68.230 -p 5433 -U postgres -d postgres -c "SELECT concat('\"', usename, '\" \"', passwd, '\"') FROM pg_shadow" >> /etc/pgbouncer/userlist.txt  
 systemctl start pgbouncer.service  
