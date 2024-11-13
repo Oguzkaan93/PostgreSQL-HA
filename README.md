@@ -132,7 +132,7 @@ vim /etc/pgbackrest.conf
   ***Attached file {pgbackrest.conf}***  
 ## On Node 7  
 vim /etc/pgbackrest.conf  
-  ***Attached file {pgbackrest.con}***  
+  ***Attached file {pgbackrest.conf}***  
 pgbackrest --stanza=patroni_stanza stanza-create  
 pgbackrest --stanza=patroni_stanza check --log-level-console=detail  
 pgbackrest --stanza=patroni_stanza backup --log-level-console=detail  
